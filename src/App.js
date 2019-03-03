@@ -10,19 +10,19 @@ export default function App () {
 
     const onChangeField = useEventCallback( (changed,newValue) => {
         setState({ ...state, [changed]: newValue });
-    });
+    }, [state] );
 
-    const thing = state.thing || 0;
+    const counter = state.counter || 0;
 
     return (
         <div className="App">
             <header className="App-header">
                 <img src={logo} className="App-logo" alt="logo"/>
             </header>
-            <p>{thing}</p>
             <p>
-                <button onClick={() => onChangeField('thing',thing-1)}>--</button>
-                <button onClick={() => onChangeField('thing',thing+1)}>++</button>
+                <button onClick={() => onChangeField('counter',counter-1)}>--</button>
+                {' '}{counter}{' '}
+                <button onClick={() => onChangeField('counter',counter+1)}>++</button>
             </p>
             <Address name="homeAddress" value={state.homeAddress} onChangeField={onChangeField} />
             <Address name="workAddress" value={state.workAddress} onChangeField={onChangeField} />
