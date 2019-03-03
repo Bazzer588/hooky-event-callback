@@ -1,5 +1,5 @@
-import { useLayoutEffect, useMemo, useRef } from "react";
-
+import { useLayoutEffect, useMemo, useRef, useCallback } from "react"; // eslint-disable-line no-unused-vars
+/*
 export default function useEventCallback (fn) {
     const ref = useRef();
     useLayoutEffect(() => {
@@ -10,7 +10,7 @@ export default function useEventCallback (fn) {
         return (...args) => ref.current(...args);
     }, []);
 }
-
+*/
 
 /*
     https://github.com/facebook/react/issues/14099
@@ -26,22 +26,18 @@ export default function useEventCallback (fn) {
     return useMemo(() => (...args) => (0, ref.current)(...args), []);
 */
 
-/*
-
 export default function useEventCallback (fn, dependencies = []) {
     const ref = useRef(() => {
-        throw new Error('Cannot call an event handler while rendering.');
+        throw new Error('14099'); // if called during render
     });
 
     useLayoutEffect(() => {
         ref.current = fn;
-    });
-    // }, [fn, ...dependencies]);
+    }, [fn, ...dependencies]);
 
-    return useCallback(() => {
-        const fn = ref.current;
-        return fn();
+    return useCallback((...args) => {
+        return ref.current(...args);
     }, [ref]);
 }
-*/
+
 // above from https://reactjs.org/docs/hooks-faq.html

@@ -38,7 +38,7 @@ function Address ({ name, value = {}, onChangeField }) {
 
 }
 
-const regions = {  // eslint-disable-line no-unused-vars
+const regions = {
     US: USAStates,
     CA: CanadaProvince
 };
