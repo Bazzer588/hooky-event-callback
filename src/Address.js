@@ -5,6 +5,13 @@ import Countries from './data/data-countries.json';
 import CanadaProvinces from './data/data-canada.json';
 import USAStates from './data/data-usa.json';
 
+/** A reusable Address component
+ *
+ * @param name should be unique on the page, for example 'homeAddress', 'otherAddress', 'newAddress'
+ * @param value an object or undefined to start, ie { country: '', province: '', address: '', zip: '' }
+ * @param onChangeField - a callback, call with (name,newValue)
+ */
+
 function Address ({ name, value = {}, onChangeField }) {
 
     // console.log('A',name);
