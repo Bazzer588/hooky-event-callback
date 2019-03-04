@@ -26,6 +26,11 @@ export default function useEventCallback (fn) {
     return useMemo(() => (...args) => (0, ref.current)(...args), []);
 */
 
+/** this one is the code from
+ *  https://reactjs.org/docs/hooks-faq.html
+ *  modified to pass args to the callback
+ */
+
 export default function useEventCallback (fn, dependencies = []) {
     const ref = useRef(() => {
         throw new Error('14099'); // if called during render
@@ -39,5 +44,3 @@ export default function useEventCallback (fn, dependencies = []) {
         return ref.current(...args);
     }, [ref]);
 }
-
-// above from https://reactjs.org/docs/hooks-faq.html

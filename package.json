@@ -1,5 +1,6 @@
 {
   "name": "hooky",
+  "homepage": "/hooky",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
