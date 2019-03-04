@@ -1,19 +1,28 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-See the demo at [https://bazzer588.github.io/hooky/](https://bazzer588.github.io/hooky/)
 
 ### What's this about?
 
-Uses React 16.8.3, with React hooks
+This is a simple little project for React 16.8.3,
+with the new React hooks API's.
+You can see it running here: [https://bazzer588.github.io/hooky/](https://bazzer588.github.io/hooky/)
 
-## Available Scripts
+Hooks allow functional components to have state - this is very different to
+the old class based model
 
-In the project directory, you can run:
+There are no classes in this project!
+All the code is in functional components.
 
-### `npm start`
+An issue was raised concerning callback handling using the hooks API
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+See the discussion here:
+https://github.com/facebook/react/issues/14099
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+And the documentation here:
+https://reactjs.org/docs/hooks-faq.html#how-to-read-an-often-changing-value-from-usecallback
+
+
+### How do I run it myself?
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+Full documentation here:
+https://facebook.github.io/create-react-app/docs/available-scripts
