@@ -29,16 +29,15 @@ https://reactjs.org/docs/hooks-faq.html#how-to-read-an-often-changing-value-from
 
 ### The gory details
 
-  props flow down the tree
-  events flow up 
+  props flow down the tree, events trickle up 
   
-App is the component in charge of state, it sends props down to...
+*App* is the component in charge of state, it sends props down to...
 
-Address is a component that accepts props, and renders a number of...
+*Address* is a component that accepts props, and renders a number of...
 
-InputField components
+*InputField* components
 
-There's a little bit of clever behavior in the Address component.
+There's a little bit of clever behavior in the *Address* component.
 Different countries have slightly different behavior - try changing the country to see
  
 
