@@ -19,9 +19,8 @@ Have a look at the demo with ReactDevTools and "Highlight updates" switched on, 
 run it with the console open - when you edit a field you should see that only the
 affected field and the address it belongs to are re-rendered.
 
-An issue was raised concerning callback handling using the hooks API
-
-See the discussion here:
+An issue was raised concerning callback handling using the hooks API:
+see the discussion here:
 https://github.com/facebook/react/issues/14099
 
 And the documentation here:
