@@ -1,31 +1,36 @@
-import React from 'react';
-import useEventCallback from './useEventCallback';
+import React, { useReducer } from 'react';
 import InputField from './InputField';
 import Countries from './data/data-countries.json';
 import CanadaProvinces from './data/data-canada.json';
 import USAStates from './data/data-usa.json';
 
+const reducerAddress = (name,dispatch) => (state,action) => {
+    if (action.type==='SET') {
+        const mod = {
+            ...state,
+            [action.key]: action.value
+        };
+        if (action.key==='country') {
+            mod.province = mod.address = mod.zip = '';  // if changing country, reset these
+            if (action.value==='GB') {
+                mod.province = 'Somerset';
+            }
+        }
+        dispatch({ type: 'SET', key: name, value: mod }); // NOT ALLOWED IN REDUX, BUT OK HERE !
+        return mod;
+    }
+};
+
 /** A reusable Address component
  *
  * @param name should be unique on the page, for example 'homeAddress', 'otherAddress', 'newAddress'
  * @param value an object or undefined to start, ie { country: '', province: '', address: '', zip: '' }
- * @param onChangeField - a callback, call with (name,newValue)
+ * @param dispatch - call with { type: 'SET', key: name, value: mod }
  */
 
-function Address ({ name, value = {}, onChangeField }) {
+function Address ({ name, value = {}, dispatch }) {
 
-    // console.log('A',name);
-
-    const onChangeEv = useEventCallback( (changed, newValue) => {
-        const mod = { ...value, [changed]: newValue };
-        if (changed==='country') {
-            mod.province = mod.address = mod.zip = '';  // if changing country, reset these
-            if (newValue==='GB') {
-                mod.province = 'Somerset';
-            }
-        }
-        onChangeField(name,mod); // notify the parent
-    }, [value] );
+    const [state, dispatchAddress] = useReducer(reducerAddress(name,dispatch),value);
 
     function field (fieldName, label, options) {
         return <tr>
@@ -34,9 +39,10 @@ function Address ({ name, value = {}, onChangeField }) {
                 <InputField
                     name={fieldName}
                     path={name}
-                    value={value[fieldName]}
+                    value={state[fieldName]}
                     options={options}
-                    onChangeField={onChangeEv} />
+                    dispatch={dispatchAddress}
+                />
             </td>
         </tr>;
     }

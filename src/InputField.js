@@ -1,13 +1,13 @@
 import React from 'react';
 
-function InputField ({ name, value = '', path, options, onChangeField, ...props }) {
+function InputField ({ name, value = '', path, options, dispatch, ...props }) {
 
     console.log('F',path,name,value);
 
     const id = path+'-'+name;
 
     function onChange (ev) {
-        onChangeField(name,ev.target.value);
+        dispatch({ type: 'SET', key: name, value: ev.target.value }); // notify the parent
     }
 
     return (

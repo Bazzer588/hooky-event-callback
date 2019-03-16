@@ -1,19 +1,27 @@
-import React, { useState } from 'react';
-import useEventCallback from './useEventCallback';
+import React, { useReducer } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Address from './Address';
 
+function reducerApp (state,action) {
+    switch(action.type) {
+        case 'SET': {
+            return {
+                ...state,
+                [action.key]: action.value
+            };
+        }
+        default:
+            return state;
+    }
+}
+
 export default function App () {
 
-    const [state, setState] = useState({});
-
-    const onChangeField = useEventCallback( (changed,newValue) => {
-        setState({ ...state, [changed]: newValue });
-    }, [state] );
+    const [state, dispatchApp] = useReducer(reducerApp,{});
 
     function renderAddress (name) {
-        return <Address name={name} value={state[name]} onChangeField={onChangeField} />;
+        return <Address name={name} value={state[name]} dispatch={dispatchApp} />;
     }
 
     const counter = state.counter || 0;
@@ -26,9 +34,9 @@ export default function App () {
             <form autoComplete="off">
 
             <p>
-                <button onClick={() => onChangeField('counter',counter-1)} type="button">--</button>
+                <button onClick={() => dispatchApp({ type: 'SET', key: 'counter', value: counter-1 })} type="button">--</button>
                 {' '}{counter}{' '}
-                <button onClick={() => onChangeField('counter',counter+1)} type="button">++</button>
+                <button onClick={() => dispatchApp({ type: 'SET', key: 'counter', value: counter+1 })} type="button">++</button>
             </p>
 
             {renderAddress('homeAddress')}
@@ -49,4 +57,3 @@ export default function App () {
         </div>
     );
 }
-
