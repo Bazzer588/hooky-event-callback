@@ -4,7 +4,7 @@ import Countries from './data/data-countries.json';
 import CanadaProvinces from './data/data-canada.json';
 import USAStates from './data/data-usa.json';
 
-const reducerAddress = (name,dispatch) => (state,action) => {
+const reducerAddress = (state,action) => {
     if (action.type==='SET') {
         const mod = {
             ...state,
@@ -16,7 +16,7 @@ const reducerAddress = (name,dispatch) => (state,action) => {
                 mod.province = 'Somerset';
             }
         }
-        dispatch({ type: 'SET', key: name, value: mod }); // NOT ALLOWED IN REDUX, BUT OK HERE !
+        // dispatch({ type: 'SET', key: name, value: mod }); // NOT ALLOWED IN REDUX, BUT OK HERE !
         return mod;
     }
 };
@@ -30,7 +30,14 @@ const reducerAddress = (name,dispatch) => (state,action) => {
 
 function Address ({ name, value = {}, dispatch }) {
 
-    const [state, dispatchAddress] = useReducer(reducerAddress(name,dispatch),value);
+    console.log('RAD',value.addressKey);
+
+    const reducer = React.useCallback(reducerAddress,[value]);
+    const [state, dispatchAddress] = useReducer(reducer,value);
+
+    React.useEffect( () => {
+        dispatch({ type: 'SET', key: name, value: state })
+    },[state]);
 
     function field (fieldName, label, options) {
         return <tr>
@@ -75,4 +82,8 @@ const zipLabel = {
     CN: '邮政编码'
 };
 
-export default React.memo(Address);
+function sameAddress (prev, next) {
+    return prev.name === next.name && prev.dispatch === next.dispatch;
+}
+
+export default React.memo(Address,sameAddress);

@@ -2,7 +2,7 @@ import React from 'react';
 
 function InputField ({ name, value = '', path, options, dispatch, ...props }) {
 
-    console.log('F',path,name,value);
+    // console.log('F',path,name,value);
 
     const id = path+'-'+name;
 

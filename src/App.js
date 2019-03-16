@@ -2,6 +2,12 @@ import React, { useReducer } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Address from './Address';
+import AddressList from './AddressList';
+
+const initialState = {
+    homeAddress: { country: 'US' },
+    previousAddresses: [{ addressKey: 'X', country: 'CA' }]
+};
 
 function reducerApp (state,action) {
     switch(action.type) {
@@ -18,7 +24,7 @@ function reducerApp (state,action) {
 
 export default function App () {
 
-    const [state, dispatchApp] = useReducer(reducerApp,{});
+    const [state, dispatchApp] = useReducer(reducerApp,initialState);
 
     function renderAddress (name) {
         return <Address name={name} value={state[name]} dispatch={dispatchApp} />;
@@ -43,6 +49,8 @@ export default function App () {
             {renderAddress('workAddress')}
             {renderAddress('correspondAddress')}
 
+            <AddressList name="previousAddresses" value={state.previousAddresses} dispatch={dispatchApp}/>
+
             <p><b>Data</b></p>
             <code>
                 {JSON.stringify(state,null,'  ')}
@@ -53,6 +61,8 @@ export default function App () {
                 https://github.com/Bazzer588/hooky-event-callback
                 </a>
             </p>
+
+                <p>See github for full details</p>
             </form>
         </div>
     );
