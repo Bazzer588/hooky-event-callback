@@ -1,7 +1,7 @@
 import React from 'react';
 import {useHierarchyReducer, standardReducer} from "./useHierarchyReducer";
 
-const reducerAddressList = (state,action) => {
+const reducerAddressList = (state,action) => {   // state is an array []
     const mod = [...state];
     switch (action.type) {
         // case 'SET': {
@@ -49,9 +49,9 @@ function AddressList ({ name, value = [], dispatch, Compo }) {
 
     console.log('RENDER LIST',name, dbg(value) );
 
-    const [state, dispatchList] = useHierarchyReducer(reducerAddressList,value,name,dispatch);
+    const dispatchList = useHierarchyReducer(reducerAddressList,value,name,dispatch);
 
-    const output = state.map( (address,index) => {
+    const output = value.map( (address,index) => {
         return (
             <div key={name+'.'+index} data-xkey={address.addressKey} style={{ position: 'relative' }}>
                 <span className="top-right">
@@ -71,17 +71,17 @@ function AddressList ({ name, value = [], dispatch, Compo }) {
             <p><b>{name}</b></p>
             {output}
             <p>
-                <button onClick={() => dispatchList({ type: 'SET', key: state.length, value: { addressKey: 'K'+(keySequence++) } })} type="button">
+                <button onClick={() => dispatchList({ type: 'SET', key: value.length, value: { addressKey: 'K'+(keySequence++) } })} type="button">
                     Add another address
                 </button>
                 {' '}
-                {state.length > 1 &&
+                {value.length > 1 &&
                     <button onClick={() => dispatchList({type: 'REVERSE'})} type="button">
                         Reverse list
                     </button>
                 }
                 {' '}
-                    {state.length>0 &&
+                    {value.length>0 &&
                     <button onClick={() => dispatchList({type: 'INSERT', key: 0, value: { addressKey: 'K'+(keySequence++) } })} type="button">
                         Insert
                     </button>

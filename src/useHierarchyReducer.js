@@ -35,11 +35,9 @@ export function useHierarchyReducer (reducer,state,name,dispatch) {
         ref.current = doAction;
     }, [state,name]);
 
-    const callback = useCallback( (...args) => {
+    return useCallback( (...args) => {
         return ref.current(...args);
     }, [ref]);
-
-    return [state,callback];
 }
 
 export function setHierarchyValue (dispatch,key,value) {

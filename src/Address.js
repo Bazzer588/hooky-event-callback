@@ -28,9 +28,9 @@ const reducerAddress = (state,action) => {
 
 function Address ({ name, value = {}, dispatch }) {
 
-    const [state, dispatchAddress] = useHierarchyReducer(reducerAddress,value,name,dispatch);
+    const dispatchAddress = useHierarchyReducer(reducerAddress,value,name,dispatch);
 
-    console.log('RAD',value.addressKey,state.country);
+    console.log('RAD',value.addressKey,value.country);
 
     function field (fieldName, label, options) {
         return <tr>
@@ -39,7 +39,7 @@ function Address ({ name, value = {}, dispatch }) {
                 <InputField
                     name={fieldName}
                     path={name}
-                    value={state[fieldName]}
+                    value={value[fieldName]}
                     options={options}
                     dispatch={dispatchAddress}
                 />
@@ -47,7 +47,7 @@ function Address ({ name, value = {}, dispatch }) {
         </tr>;
     }
 
-    const country = state.country;
+    const country = value.country;
 
     return (
         <div>
