@@ -1,6 +1,6 @@
 import React from 'react';
 import Address from './Address';
-import {useHierarchyReducer} from "./data/useHierarchyReducer";
+import {useHierarchyReducer} from "./useHierarchyReducer";
 
 const reducerAddressList = (state,action) => {
     const mod = [...state];
