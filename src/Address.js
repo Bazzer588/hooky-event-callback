@@ -30,13 +30,16 @@ const reducerAddress = (state,action) => {
 
 function Address ({ name, value = {}, dispatch }) {
 
-    console.log('RAD',value.addressKey);
+    // const reducer = React.useCallback(reducerAddress,[value]);
+    const [state, dispatchAddress] = useReducer(reducerAddress,value);
 
-    const reducer = React.useCallback(reducerAddress,[value]);
-    const [state, dispatchAddress] = useReducer(reducer,value);
+    console.log('RAD',value.addressKey,value.country,state.country);
+
+    const initial = React.useRef(true);
 
     React.useEffect( () => {
-        dispatch({ type: 'SET', key: name, value: state })
+        if (initial.current) initial.current = false;
+        else dispatch({ type: 'SET', key: name, value: state })
     },[state]);
 
     function field (fieldName, label, options) {
@@ -54,7 +57,7 @@ function Address ({ name, value = {}, dispatch }) {
         </tr>;
     }
 
-    const country = value.country;
+    const country = state.country;
 
     return (
         <div>
@@ -82,8 +85,9 @@ const zipLabel = {
     CN: '邮政编码'
 };
 
-function sameAddress (prev, next) {
-    return prev.name === next.name && prev.dispatch === next.dispatch;
-}
+// function sameAddress (prev, next) {
+//     return prev.name === next.name && prev.dispatch === next.dispatch;
+// }
 
-export default React.memo(Address,sameAddress);
+export default React.memo(Address);
+// export default Address;

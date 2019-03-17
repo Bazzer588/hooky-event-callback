@@ -32,13 +32,16 @@ const reducerAddressList = (state,action) => {
 
 function AddressList ({ name, value = [], dispatch }) {
 
-    if (value.length) console.log('RAL',name, dbg(value) );
+    console.log('RENDER LIST',name, dbg(value) );
 
     const reducer = React.useCallback(reducerAddressList,[value]);
     const [state, dispatchList] = useReducer(reducer, value);
 
-    React.useEffect( () => {
-        dispatch({ type: 'SET', key: name, value: state })
+    const initial = React.useRef(true);
+
+    React.useLayoutEffect( () => {
+        if (initial.current) initial.current = false;
+        else dispatch({ type: 'SET', key: name, value: state })
     },[state]);
 
     const output = state.map( (address,index) => {
@@ -77,7 +80,7 @@ function AddressList ({ name, value = [], dispatch }) {
 }
 
 function sameList (prev, next) {
-    return prev.dispatch === next.dispatch;
+    return prev.value===next.value;
 }
 
 export default React.memo(AddressList,sameList);
@@ -85,5 +88,5 @@ export default React.memo(AddressList,sameList);
 let keySequence = 1;
 
 function dbg (lst) {
-    return lst.map( a => a.addressKey ).join(',');
+    return '['+lst.map( a => a.addressKey ).join(',')+']';
 }

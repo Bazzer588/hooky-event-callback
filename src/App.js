@@ -10,6 +10,7 @@ const initialState = {
 };
 
 function reducerApp (state,action) {
+    console.log('APP REDUCER',action.type,action.key);
     switch(action.type) {
         case 'SET': {
             return {
@@ -24,10 +25,16 @@ function reducerApp (state,action) {
 
 export default function App () {
 
+    console.log('RENDER APP');
+
     const [state, dispatchApp] = useReducer(reducerApp,initialState);
 
+    function setApp (key,value) {
+        dispatchApp({ type: 'SET', key, value });
+    }
+
     function renderAddress (name) {
-        return <Address name={name} value={state[name]} dispatch={dispatchApp} />;
+        return <Address key={name} name={name} value={state[name]} dispatch={dispatchApp} />;
     }
 
     const counter = state.counter || 0;
@@ -63,6 +70,15 @@ export default function App () {
             </p>
 
                 <p>See github for full details</p>
+                <p>
+                    <button onClick={() => setApp('previousAddresses',[])} type="button">Reset List</button>
+                    {' '}
+                    <button onClick={() => {
+                        setApp('homeAddress',{});
+                        setApp('workAddress',{});
+                        setApp('correspondAddress',{});
+                    }} type="button">Reset Others</button>
+                </p>
             </form>
         </div>
     );
