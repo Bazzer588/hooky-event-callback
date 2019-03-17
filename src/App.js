@@ -18,6 +18,9 @@ function reducerApp (state,action) {
                 [action.key]: action.value
             };
         }
+        case 'CLEAR': {
+            return {};
+        }
         default:
             return state;
     }
@@ -71,6 +74,8 @@ export default function App () {
 
                 <p>See github for full details</p>
                 <p>
+                    <button onClick={() => dispatchApp({ type: 'CLEAR' })} type="button">Clear All</button>
+                    {' '}
                     <button onClick={() => setApp('previousAddresses',[])} type="button">Reset List</button>
                     {' '}
                     <button onClick={() => {

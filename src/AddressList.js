@@ -1,5 +1,6 @@
-import React, { useReducer } from 'react';
+import React from 'react';
 import Address from './Address';
+import {useHierarchyReducer} from "./data/useHierarchyReducer";
 
 const reducerAddressList = (state,action) => {
     const mod = [...state];
@@ -35,14 +36,14 @@ function AddressList ({ name, value = [], dispatch }) {
     console.log('RENDER LIST',name, dbg(value) );
 
     const reducer = React.useCallback(reducerAddressList,[value]);
-    const [state, dispatchList] = useReducer(reducer, value);
+    const [state, dispatchList] = useHierarchyReducer(reducer, value,name,dispatch);
 
-    const initial = React.useRef(true);
-
-    React.useLayoutEffect( () => {
-        if (initial.current) initial.current = false;
-        else dispatch({ type: 'SET', key: name, value: state })
-    },[state]);
+    // const initial = React.useRef(true);
+    //
+    // React.useLayoutEffect( () => {
+    //     if (initial.current) initial.current = false;
+    //     else dispatch({ type: 'SET', key: name, value: state })
+    // },[state]);
 
     const output = state.map( (address,index) => {
         return (
@@ -79,11 +80,11 @@ function AddressList ({ name, value = [], dispatch }) {
 
 }
 
-function sameList (prev, next) {
-    return prev.value===next.value;
-}
+// function sameList (prev, next) {
+//     return prev.value===next.value;
+// }
 
-export default React.memo(AddressList,sameList);
+export default React.memo(AddressList);
 
 let keySequence = 1;
 

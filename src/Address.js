@@ -1,8 +1,9 @@
-import React, { useReducer } from 'react';
+import React from 'react';
 import InputField from './InputField';
 import Countries from './data/data-countries.json';
 import CanadaProvinces from './data/data-canada.json';
 import USAStates from './data/data-usa.json';
+import {useHierarchyReducer} from "./data/useHierarchyReducer";
 
 const reducerAddress = (state,action) => {
     if (action.type==='SET') {
@@ -16,7 +17,6 @@ const reducerAddress = (state,action) => {
                 mod.province = 'Somerset';
             }
         }
-        // dispatch({ type: 'SET', key: name, value: mod }); // NOT ALLOWED IN REDUX, BUT OK HERE !
         return mod;
     }
 };
@@ -31,16 +31,16 @@ const reducerAddress = (state,action) => {
 function Address ({ name, value = {}, dispatch }) {
 
     // const reducer = React.useCallback(reducerAddress,[value]);
-    const [state, dispatchAddress] = useReducer(reducerAddress,value);
+    const [state, dispatchAddress] = useHierarchyReducer(reducerAddress,value,name,dispatch);
 
     console.log('RAD',value.addressKey,value.country,state.country);
 
-    const initial = React.useRef(true);
-
-    React.useEffect( () => {
-        if (initial.current) initial.current = false;
-        else dispatch({ type: 'SET', key: name, value: state })
-    },[state]);
+    // const initial = React.useRef(true);
+    //
+    // React.useEffect( () => {
+    //     if (initial.current) initial.current = false;
+    //     else dispatch({ type: 'SET', key: name, value: state })
+    // },[state]);
 
     function field (fieldName, label, options) {
         return <tr>
