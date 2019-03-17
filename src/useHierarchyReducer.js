@@ -3,10 +3,10 @@ import React, {useCallback, useLayoutEffect} from "react";
 const SET = 'SET';
 
 export const standardReducer = (state,action) => {
-    if (action.type===SET) {
+    if (action.type === SET) {
 
         // has the value changed ?
-        if (state[action.key]===action.value) {
+        if (state[action.key] === action.value) {
             return state;  // no change
         }
         if (Array.isArray(state)) {
@@ -14,12 +14,9 @@ export const standardReducer = (state,action) => {
             mod[action.key] = action.value;
             return mod;
         } else {
-            const mod = { ...state, [action.key]: action.value };
-            // TODO call reducer to let it mutate mod ?
-            return mod;
+            return { ...state, [action.key]: action.value };
         }
     }
-    // any action other than SET
     return state;
 };
 
@@ -27,25 +24,24 @@ export function useHierarchyReducer (reducer,state,name,dispatch) {
 
     const ref = React.useRef(null);
 
-    const redo = (action) => {
-        // const value = enhancedReducer(reducer,state)(action);  // TODO some way of passing messages up the tree ?
-        const value = reducer(state,action);
-        if (value!==state) {
-            setHierarchyValue(dispatch,name,value);  // notify parent in tree
+    const doAction = (action) => {
+        const mod = reducer(state,action);
+        if (mod !== state) {
+            setHierarchyValue(dispatch,name,mod);  // notify parent in tree
         }
     };
 
-    useLayoutEffect(() => {
-        ref.current = redo;
+    useLayoutEffect( () => {
+        ref.current = doAction;
     }, [state,name]);
 
-    const safe = useCallback((...args) => {
+    const callback = useCallback( (...args) => {
         return ref.current(...args);
     }, [ref]);
 
-    return [state,safe];
+    return [state,callback];
 }
 
-export function setHierarchyValue(dispatch,key,value) {
+export function setHierarchyValue (dispatch,key,value) {
     dispatch({ type: SET, key, value });
 }
