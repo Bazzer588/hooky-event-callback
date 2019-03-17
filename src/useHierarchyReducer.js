@@ -1,13 +1,14 @@
 import React, {useCallback, useLayoutEffect} from "react";
 
+const SET = 'SET';
 
-const enhancedReducer = (reducer,state) => (action) => {
-    if (action.type==='SET') {
+export const standardReducer = (state,action) => {
+    if (action.type===SET) {
         // call reducer? did it deal with SET itself?
-        const changed = reducer(state,action);
-        if (changed!==state) {
-            return changed;
-        }
+        // const changed = reducer(state,action);
+        // if (changed!==state) {
+        //     return changed;
+        // }
         // has the value changed ?
         if (state[action.key]===action.value) {
             return state;  // no change
@@ -22,8 +23,9 @@ const enhancedReducer = (reducer,state) => (action) => {
             return mod;
         }
     }
-    // any action other than 'SET'
-    return reducer ? reducer(state,action) : state;
+    // any action other than SET
+    return state;
+    // return reducer ? reducer(state,action) : state;
 };
 
 export function useHierarchyReducer (reducer,state,name,dispatch) {
@@ -31,9 +33,10 @@ export function useHierarchyReducer (reducer,state,name,dispatch) {
     const ref = React.useRef(null);
 
     const redo = (action) => {
-        const value = enhancedReducer(reducer,state)(action);  // TODO some way of passing messages up the tree ?
+        // const value = enhancedReducer(reducer,state)(action);  // TODO some way of passing messages up the tree ?
+        const value = reducer(state,action);
         if (value!==state) {
-            setHierarchyValue(dispatch,name,value);
+            setHierarchyValue(dispatch,name,value);  // notify parent in tree
         }
     };
 
@@ -49,5 +52,5 @@ export function useHierarchyReducer (reducer,state,name,dispatch) {
 }
 
 export function setHierarchyValue(dispatch,key,value) {
-    dispatch({ type: 'SET', key, value });
+    dispatch({ type: SET, key, value });
 }

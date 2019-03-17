@@ -2,39 +2,47 @@ import React, { useReducer } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Address from './Address';
+//import Address from './AddressComponent';
 import AddressList from './AddressList';
+import {setHierarchyValue} from "./useHierarchyReducer";
 
 const initialState = {
-    homeAddress: { country: 'US' },
-    previousAddresses: [{ addressKey: 'X', country: 'CA' }]
+    homeAddress: { country: 'US', province: 'WY' },
+    previousAddresses: [{ addressKey: 'X', country: 'CA', province: 'BC' }]
 };
+
+if (!window.lastState)
+    window.lastState = initialState;
 
 function reducerApp (state,action) {
     console.log('APP REDUCER',action.type,action.key);
+    let mod;
     switch(action.type) {
         case 'SET': {
-            return {
+            mod = {
                 ...state,
                 [action.key]: action.value
             };
+            break;
         }
         case 'CLEAR': {
-            return {};
+            mod = {};
+            break;
         }
         default:
-            return state;
+            mod = state;
     }
+    window.lastState = mod;
+    return mod;
 }
 
-export default function App () {
+function App () {
 
-    console.log('RENDER APP');
+    // console.log('RENDER APP',new Error());
 
-    const [state, dispatchApp] = useReducer(reducerApp,initialState);
+    const [state, dispatchApp] = useReducer(reducerApp,window.lastState);
 
-    function setApp (key,value) {
-        dispatchApp({ type: 'SET', key, value });
-    }
+    console.log('RENDER APP'); // ,JSON.stringify(state));
 
     function renderAddress (name) {
         return <Address key={name} name={name} value={state[name]} dispatch={dispatchApp} />;
@@ -59,7 +67,12 @@ export default function App () {
             {renderAddress('workAddress')}
             {renderAddress('correspondAddress')}
 
-            <AddressList name="previousAddresses" value={state.previousAddresses} dispatch={dispatchApp}/>
+            <AddressList
+                name="previousAddresses"
+                value={state.previousAddresses}
+                Compo={Address}
+                dispatch={dispatchApp}
+            />
 
             <p><b>Data</b></p>
             <code>
@@ -76,15 +89,17 @@ export default function App () {
                 <p>
                     <button onClick={() => dispatchApp({ type: 'CLEAR' })} type="button">Clear All</button>
                     {' '}
-                    <button onClick={() => setApp('previousAddresses',[])} type="button">Reset List</button>
+                    <button onClick={() => setHierarchyValue(dispatchApp,'previousAddresses',[])} type="button">Reset List</button>
                     {' '}
                     <button onClick={() => {
-                        setApp('homeAddress',{});
-                        setApp('workAddress',{});
-                        setApp('correspondAddress',{});
+                        setHierarchyValue(dispatchApp,'homeAddress',{});
+                        setHierarchyValue(dispatchApp,'workAddress',{});
+                        setHierarchyValue(dispatchApp,'correspondAddress',{});
                     }} type="button">Reset Others</button>
                 </p>
             </form>
         </div>
     );
 }
+
+export default React.memo(App);

@@ -1,14 +1,13 @@
 import React from 'react';
-import Address from './Address';
-import {useHierarchyReducer} from "./useHierarchyReducer";
+import {useHierarchyReducer, standardReducer} from "./useHierarchyReducer";
 
 const reducerAddressList = (state,action) => {
     const mod = [...state];
     switch (action.type) {
-        case 'SET': {
-            mod[action.key] = action.value;
-            break;
-        }
+        // case 'SET': {
+        //     mod[action.key] = action.value;
+        //     break;
+        // }
         case 'DELETE': {
             mod.splice(action.key,1);
             console.log('DELETE',action.key,dbg(state));
@@ -19,19 +18,36 @@ const reducerAddressList = (state,action) => {
             console.log('INSERT',dbg(mod));
             break;
         }
+        case 'UP': {
+            const i = action.key;
+            if (i<1) return state;
+            const r = mod[i];
+            mod[i] = mod[i-1];
+            mod[i-1] = r;
+            break;
+        }
+        case 'DOWN': {
+            const i = action.key;
+            if (i>=state.length-1) return state;
+            const r = mod[i];
+            mod[i] = mod[i+1];
+            mod[i+1] = r;
+            break;
+        }
         case 'REVERSE': {
             mod.reverse();
             console.log('REVERSED',dbg(mod));
             break;
         }
         default:
-            throw new Error('Invalid action');
+            return standardReducer(state,action);
+            // throw new Error('Invalid action');
     }
     //dispatch({ type: 'SET', key: name, value: mod });
     return mod;
 };
 
-function AddressList ({ name, value = [], dispatch }) {
+function AddressList ({ name, value = [], dispatch, Compo }) {
 
     console.log('RENDER LIST',name, dbg(value) );
 
@@ -48,8 +64,14 @@ function AddressList ({ name, value = [], dispatch }) {
     const output = state.map( (address,index) => {
         return (
             <div key={address.addressKey} style={{ position: 'relative' }}>
-                <button onClick={() => dispatchList({ type: 'DELETE', key: index })} className="top-right" type="button">Delete</button>
-                <Address name={index} value={address} dispatch={dispatchList} />
+                <span className="top-right">
+                    <button onClick={() => dispatchList({ type: 'UP', key: index })} type="button">Up</button>
+                    {' '}
+                    <button onClick={() => dispatchList({ type: 'DOWN', key: index })} type="button">Down</button>
+                    {' '}
+                    <button onClick={() => dispatchList({ type: 'DELETE', key: index })} type="button">Delete</button>
+                </span>
+                <Compo name={index} value={address} dispatch={dispatchList} />
             </div>
         );
     });

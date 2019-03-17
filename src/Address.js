@@ -1,9 +1,7 @@
 import React from 'react';
 import InputField from './InputField';
-import Countries from './data/data-countries.json';
-import CanadaProvinces from './data/data-canada.json';
-import USAStates from './data/data-usa.json';
 import {useHierarchyReducer} from "./useHierarchyReducer";
+import { Countries, regions, zipLabel } from './data';
 
 const reducerAddress = (state,action) => {
     if (action.type==='SET') {
@@ -74,16 +72,6 @@ function Address ({ name, value = {}, dispatch }) {
     );
 
 }
-
-const regions = {
-    US: USAStates,
-    CA: CanadaProvinces
-};
-
-const zipLabel = {
-    GB: 'Post code',
-    CN: '邮政编码'
-};
 
 // function sameAddress (prev, next) {
 //     return prev.name === next.name && prev.dispatch === next.dispatch;
