@@ -28,17 +28,9 @@ const reducerAddress = (state,action) => {
 
 function Address ({ name, value = {}, dispatch }) {
 
-    // const reducer = React.useCallback(reducerAddress,[value]);
     const [state, dispatchAddress] = useHierarchyReducer(reducerAddress,value,name,dispatch);
 
-    console.log('RAD',value.addressKey,value.country,state.country);
-
-    // const initial = React.useRef(true);
-    //
-    // React.useEffect( () => {
-    //     if (initial.current) initial.current = false;
-    //     else dispatch({ type: 'SET', key: name, value: state })
-    // },[state]);
+    console.log('RAD',value.addressKey,state.country);
 
     function field (fieldName, label, options) {
         return <tr>
@@ -73,9 +65,4 @@ function Address ({ name, value = {}, dispatch }) {
 
 }
 
-// function sameAddress (prev, next) {
-//     return prev.name === next.name && prev.dispatch === next.dispatch;
-// }
-
 export default React.memo(Address);
-// export default Address;

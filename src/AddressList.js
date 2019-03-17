@@ -41,9 +41,7 @@ const reducerAddressList = (state,action) => {
         }
         default:
             return standardReducer(state,action);
-            // throw new Error('Invalid action');
     }
-    //dispatch({ type: 'SET', key: name, value: mod });
     return mod;
 };
 
@@ -53,13 +51,6 @@ function AddressList ({ name, value = [], dispatch, Compo }) {
 
     const reducer = React.useCallback(reducerAddressList,[value]);
     const [state, dispatchList] = useHierarchyReducer(reducer, value,name,dispatch);
-
-    // const initial = React.useRef(true);
-    //
-    // React.useLayoutEffect( () => {
-    //     if (initial.current) initial.current = false;
-    //     else dispatch({ type: 'SET', key: name, value: state })
-    // },[state]);
 
     const output = state.map( (address,index) => {
         return (
@@ -101,10 +92,6 @@ function AddressList ({ name, value = [], dispatch, Compo }) {
     );
 
 }
-
-// function sameList (prev, next) {
-//     return prev.value===next.value;
-// }
 
 export default React.memo(AddressList);
 
