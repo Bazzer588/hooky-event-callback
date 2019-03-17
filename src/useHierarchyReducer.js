@@ -4,11 +4,7 @@ const SET = 'SET';
 
 export const standardReducer = (state,action) => {
     if (action.type===SET) {
-        // call reducer? did it deal with SET itself?
-        // const changed = reducer(state,action);
-        // if (changed!==state) {
-        //     return changed;
-        // }
+
         // has the value changed ?
         if (state[action.key]===action.value) {
             return state;  // no change
@@ -25,7 +21,6 @@ export const standardReducer = (state,action) => {
     }
     // any action other than SET
     return state;
-    // return reducer ? reducer(state,action) : state;
 };
 
 export function useHierarchyReducer (reducer,state,name,dispatch) {
