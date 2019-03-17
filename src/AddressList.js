@@ -49,12 +49,11 @@ function AddressList ({ name, value = [], dispatch, Compo }) {
 
     console.log('RENDER LIST',name, dbg(value) );
 
-    const reducer = React.useCallback(reducerAddressList,[value]);
-    const [state, dispatchList] = useHierarchyReducer(reducer, value,name,dispatch);
+    const [state, dispatchList] = useHierarchyReducer(reducerAddressList,value,name,dispatch);
 
     const output = state.map( (address,index) => {
         return (
-            <div key={address.addressKey} style={{ position: 'relative' }}>
+            <div key={name+'.'+index} data-xkey={address.addressKey} style={{ position: 'relative' }}>
                 <span className="top-right">
                     <button onClick={() => dispatchList({ type: 'UP', key: index })} type="button">Up</button>
                     {' '}
@@ -95,6 +94,7 @@ function AddressList ({ name, value = [], dispatch, Compo }) {
 
 export default React.memo(AddressList);
 
+// watch out - hot loading will reset this to 1 !
 let keySequence = 1;
 
 function dbg (lst) {
